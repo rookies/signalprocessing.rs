@@ -1,14 +1,11 @@
 extern crate num;
 
-use std::ops::Mul;
-use std::ops::Add;
-
 #[allow(dead_code)]
 pub struct ZeroPaddedSignal<T> {
 	values: Vec<T>,
 }
 
-impl<T: num::traits::Zero + Clone + Mul<Output = T> + Add> ZeroPaddedSignal<T> {
+impl<T: num::traits::Num + Clone> ZeroPaddedSignal<T> {
 	/**
 		Returns the number of initialized values.
 	*/
@@ -115,6 +112,7 @@ mod tests {
 
 	#[test]
 	fn linear_prediction() {
+		/* Create test signals: */
 		let x2: ZeroPaddedSignal<f64> = ZeroPaddedSignal { values: vec![1.,1.,1.,1.,1.,1.] };
 		/* Test linear_prediction method: */
 		assert_eq!(vec![0., 0.8888888888888888, 0.8888888888888888, 0.8888888888888888, 0.7777777777777777, 0.7777777777777777, 0.7777777777777777, -0.1111111111111111, -0.1111111111111111, -0.1111111111111111], x2.linear_prediction(vec![8./9.,0.,0.,-1./9.]).values);

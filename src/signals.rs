@@ -1,11 +1,14 @@
 extern crate num;
 
+use std::ops::Mul;
+use std::ops::Add;
+
 #[allow(dead_code)]
 pub struct ZeroPaddedSignal<T> {
 	values: Vec<T>,
 }
 
-impl<T: num::traits::Zero + Clone> ZeroPaddedSignal<T> {
+impl<T: num::traits::Zero + Clone + Mul<Output = T> + Add> ZeroPaddedSignal<T> {
 	/**
 		Returns the number of initialized values.
 	*/
@@ -54,6 +57,28 @@ impl<T: num::traits::Zero + Clone> ZeroPaddedSignal<T> {
 		/* Make the vector immutable: */
 		let x = x;
 		/* Return the vector: */
+		x
+	}
+
+	/**
+		Creates a new signal by doing Linear Prediction using
+		the given coefficients.
+	*/
+	#[allow(dead_code)]
+	pub fn linear_prediction(&self, a: Vec<T>) -> ZeroPaddedSignal<T> {
+		let mut vals: Vec<T> = Vec::new();
+		let num: usize = self.size() + a.len();
+		for i in 0..num {
+			let mut val: T = T::zero();
+			for j in 0..a.len() {
+				let idx = (i - (j+1)) as isize;
+				if let Some(v) = a.get(j).cloned() {
+					val = val + v*self.get(idx);
+				}
+			}
+			vals.push(val);
+		}
+		let x: ZeroPaddedSignal<T> = ZeroPaddedSignal { values: vals };
 		x
 	}
 }

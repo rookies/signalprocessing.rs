@@ -7,7 +7,7 @@ This is a small Rust library for Signal Processing algorithms, my first Rust pro
 
 ## Data Structures
 * **ZeroPaddedSignal**: models an infinite, zero-padded signal; simplifies the implementation of various algorithms
-* **MaximumLengthSequence**: TODO
+* **MaximumLengthSequence**: models a maximum length sequence generator; see [Wikipedia: Maximum length sequence](https://en.wikipedia.org/wiki/Maximum_length_sequence)
 
 ## Algorithms
 * **linear prediction**: takes a *ZeroPaddedSignal* and a vector of coefficients and creates a new *ZeroPaddedSignal*; see [Wikipedia: Linear prediction](https://en.wikipedia.org/wiki/Linear_prediction)
@@ -18,5 +18,5 @@ This is a small Rust library for Signal Processing algorithms, my first Rust pro
 * discrete Fourier transform
 * inverse discrete Fourier transform
 * pre-defined polynoms for *MaximumLengthSequence*
-* ZeroPaddedSignal-like functions for *MaximumLengthSequence*
-* operators (+,-,*,/,...) for *ZeroPaddedSignal*
+* *ZeroPaddedSignal*-like functions for *MaximumLengthSequence*
+* operators (Add,Sub,Mul,Div,...) for *ZeroPaddedSignal*

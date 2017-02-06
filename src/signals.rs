@@ -111,7 +111,7 @@ impl<T: num::traits::Num + Clone> ZeroPaddedSignal<T> {
 }
 
 /**
-  TODO
+  Models a maximum length sequence generator.
 */
 #[allow(dead_code)]
 struct MaximumLengthSequence<T> {
@@ -277,7 +277,7 @@ mod tests {
      let mut x2: MaximumLengthSequence<u8> =
       MaximumLengthSequence::new(vec![true,false],
         vec![true,false,false]);
-    /* TODO: Test next method. */
+    /* Test next method. */
     for v in vec![1,1,0,0,1,0,1] {
       assert_eq!(v, x1.next());
     }
@@ -303,5 +303,22 @@ mod tests {
   fn maximum_length_sequence3() {
     let _: MaximumLengthSequence<u8> = MaximumLengthSequence::new(
       vec![true,false], vec![true]);
+  }
+  
+  #[test]
+  fn maximum_length_sequence4() {
+    /* Create test sequence: */
+    /* x^3 + x + 1; init state: 0-1-1 */
+    let mut x1: MaximumLengthSequence<i8> =
+      MaximumLengthSequence::new(vec![true,false],
+        vec![false,true,true]);
+    /* Set values: */
+    x1.set_vals(-5,5);
+    /* Test next method. */
+    for v in vec![5,5,-5,-5,5,-5,5] {
+      assert_eq!(v, x1.next());
+    }
+    /* Test to_vector method: */
+    assert_eq!(vec![5,5,-5,-5,5,-5,5], x1.to_vector());
   }
 }

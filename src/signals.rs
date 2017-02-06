@@ -91,6 +91,29 @@ impl<T: num::traits::Num + Clone> ZeroPaddedSignal<T> {
 #[cfg(test)]
 mod tests {
 	use super::ZeroPaddedSignal;
+
+	macro_rules! assert_eq_floatvec {
+		($ left: expr, $ right: expr, $ err: expr) => ({
+			match (&($ left) , &($ right), &($ err)) {
+				(left_val, right_val, err) => {
+					if ! (left_val.len() == right_val.len()) {
+						panic!("assert_eq_floatvec failed: \
+							`left.len() == right.len()` \
+							(left.len(): `{:?}`, right.len(): `{:?}`)",
+							left_val.len(), right_val.len())
+					}
+					for i in 0..left_val.len() {
+						if ! ((left_val[i]-right_val[i]).abs() <= *err) {
+							panic!("assert_eq_floatvec failed: \
+								`abs(left-right) <= err` \
+								(left: `{:?}`, right: `{:?}`, err: `{:?}`)",
+								left_val[i], right_val[i], err)
+						}
+					}
+				}
+			}
+		})
+	}
 	
 	#[test]
 	fn zero_padded_signal() {
@@ -115,6 +138,6 @@ mod tests {
 		/* Create test signals: */
 		let x2: ZeroPaddedSignal<f64> = ZeroPaddedSignal { values: vec![1.,1.,1.,1.,1.,1.] };
 		/* Test linear_prediction method: */
-		assert_eq!(vec![0., 0.8888888888888888, 0.8888888888888888, 0.8888888888888888, 0.7777777777777777, 0.7777777777777777, 0.7777777777777777, -0.1111111111111111, -0.1111111111111111, -0.1111111111111111], x2.linear_prediction(vec![8./9.,0.,0.,-1./9.]).values);
+		assert_eq_floatvec!(vec![0.,0.8,0.8,0.8,0.7,0.7,0.7,-0.1,-0.1,-0.1], x2.linear_prediction(vec![0.8,0.,0.,-0.1]).values, 1e-15);
 	}
 }

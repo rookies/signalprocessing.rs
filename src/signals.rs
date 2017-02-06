@@ -110,9 +110,36 @@ impl<T: num::traits::Num + Clone> ZeroPaddedSignal<T> {
   }
 }
 
+/**
+  
+*/
+#[allow(dead_code)]
+struct MaximumLengthSequence {
+  coefficients: Vec<u8>,
+  state: Vec<u8>
+}
+
+impl MaximumLengthSequence {
+  #[allow(dead_code)]
+  pub fn new(coefficients: Vec<u8>, state: Vec<u8>)
+    -> MaximumLengthSequence {
+    /* Vectors must not be empty: */
+    assert!(coefficients.len() > 0);
+    assert!(state.len() > 0);
+    /* Lengths of coefficients vector and state vector must match: */
+    assert_eq!(coefficients.len(), state.len());
+    /* Return the instance: */
+    MaximumLengthSequence {
+      coefficients: coefficients,
+      state: state
+    }
+  }
+}
+
 #[cfg(test)]
 mod tests {
   use super::ZeroPaddedSignal;
+  use super::MaximumLengthSequence;
   
   #[test]
   fn zero_padded_signal() {
@@ -154,5 +181,31 @@ mod tests {
       x2.linear_prediction(vec![0.8,0.,0.,-0.1]).values,
       1e-15
     );
+  }
+
+  #[test]
+  fn maximum_length_sequence1() {
+    let x1 = MaximumLengthSequence::new(vec![1,0,1], vec![1,0,1]);
+  }
+  
+  #[test]
+  #[should_panic(expected = "assertion failed: \
+    coefficients.len() > 0")]
+  fn maximum_length_sequence2() {
+    let _ = MaximumLengthSequence::new(vec![], vec![1]);
+  }
+
+  #[test]
+  #[should_panic(expected = "assertion failed: \
+    state.len() > 0")]
+  fn maximum_length_sequence3() {
+    let _ = MaximumLengthSequence::new(vec![1], vec![]);
+  }
+
+  #[test]
+  #[should_panic(expected = "assertion failed: \
+    `(left == right)` (left: `2`, right: `1`)")]
+  fn maximum_length_sequence4() {
+    let _ = MaximumLengthSequence::new(vec![1,0], vec![1]);
   }
 }

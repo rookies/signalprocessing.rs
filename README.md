@@ -9,4 +9,11 @@ This is a small Rust library for Signal Processing algorithms, my first Rust pro
 * **ZeroPaddedSignal**: models an infinite, zero-padded signal; simplifies the implementation of various algorithms
 
 ## Algorithms
-* **Linear prediction**: takes a *ZeroPaddedSignal* and a vector of coefficients and creates a new *ZeroPaddedSignal*; see [Wikipedia: Linear prediction](https://en.wikipedia.org/wiki/Linear_prediction)
+* **linear prediction**: takes a *ZeroPaddedSignal* and a vector of coefficients and creates a new *ZeroPaddedSignal*; see [Wikipedia: Linear prediction](https://en.wikipedia.org/wiki/Linear_prediction)
+
+## Planned features
+* calculating linear prediction coefficients using covariance method
+* calculating linear prediction coefficients using autocorrelation method
+* discrete Fourier transform
+* inverse discrete Fourier transform
+* maximum length sequence generator

@@ -111,28 +111,79 @@ impl<T: num::traits::Num + Clone> ZeroPaddedSignal<T> {
 }
 
 /**
-  
+  TODO
 */
 #[allow(dead_code)]
-struct MaximumLengthSequence {
-  coefficients: Vec<u8>,
-  state: Vec<u8>
+struct MaximumLengthSequence<T> {
+  coefficients: Vec<bool>,
+  state: Vec<bool>,
+  val_false: T,
+  val_true: T
 }
 
-impl MaximumLengthSequence {
+impl<T: num::traits::Num + Copy> MaximumLengthSequence<T> {
+  /**
+    Creates a new instance using the given coefficients
+    and the given initial state.
+  */
   #[allow(dead_code)]
-  pub fn new(coefficients: Vec<u8>, state: Vec<u8>)
-    -> MaximumLengthSequence {
+  pub fn new(coefficients: Vec<bool>, state: Vec<bool>)
+    -> MaximumLengthSequence<T> {
     /* Vectors must not be empty: */
     assert!(coefficients.len() > 0);
     assert!(state.len() > 0);
     /* Lengths of coefficients vector and state vector must match: */
     assert_eq!(coefficients.len(), state.len());
     /* Return the instance: */
-    MaximumLengthSequence {
+    MaximumLengthSequence::<T> {
       coefficients: coefficients,
-      state: state
+      state: state,
+      val_false: T::zero(),
+      val_true: T::one()
     }
+  }
+  
+  /**
+    Sets the two values the sequence can be.
+  */
+  #[allow(dead_code)]
+  pub fn set_vals(&mut self, val_false: T, val_true: T) {
+    self.val_false = val_false;
+    self.val_true = val_true;
+  }
+
+  /**
+    Returns the next value and switches to the next state.
+  */
+  #[allow(dead_code)]
+  pub fn next(&mut self) -> T {
+    /* Create the variable we need to return later: */
+    let x: T;
+    if self.state[self.state.len()-1] {
+      x = self.val_true;
+    } else {
+      x = self.val_false;
+    }
+    /* Set the new state: */
+    self.state = self.next_state(&self.state);
+    /* Return the value: */
+    x
+  }
+  
+  /**
+    Returns the next state for the given one.
+  */
+  fn next_state(&self, state: &Vec<bool>) -> Vec<bool> {
+    /* Create a new state vector: */
+    let mut new_state: Vec<bool> = Vec::new();
+    /* Calculate the new values: */
+    for i in 0..state.len() {
+      /* TODO */
+      new_state.push(false);
+    }
+    /* Make the new state immutable and return it: */
+    let new_state = new_state;
+    new_state
   }
 }
 
@@ -185,27 +236,32 @@ mod tests {
 
   #[test]
   fn maximum_length_sequence1() {
-    let x1 = MaximumLengthSequence::new(vec![1,0,1], vec![1,0,1]);
+    let x1: MaximumLengthSequence<u8> =
+      MaximumLengthSequence::new(vec![true,false,true],
+        vec![true,true,true]);
   }
   
   #[test]
   #[should_panic(expected = "assertion failed: \
     coefficients.len() > 0")]
   fn maximum_length_sequence2() {
-    let _ = MaximumLengthSequence::new(vec![], vec![1]);
+    let _: MaximumLengthSequence<u8> = MaximumLengthSequence::new(
+      vec![], vec![true]);
   }
 
   #[test]
   #[should_panic(expected = "assertion failed: \
     state.len() > 0")]
   fn maximum_length_sequence3() {
-    let _ = MaximumLengthSequence::new(vec![1], vec![]);
+    let _: MaximumLengthSequence<u8> = MaximumLengthSequence::new(
+      vec![true], vec![]);
   }
 
   #[test]
   #[should_panic(expected = "assertion failed: \
     `(left == right)` (left: `2`, right: `1`)")]
   fn maximum_length_sequence4() {
-    let _ = MaximumLengthSequence::new(vec![1,0], vec![1]);
+    let _: MaximumLengthSequence<u8> = MaximumLengthSequence::new(
+      vec![true,false], vec![true]);
   }
 }

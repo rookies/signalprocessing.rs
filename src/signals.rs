@@ -95,7 +95,9 @@ mod tests {
   #[test]
   fn zero_padded_signal() {
     /* Create test signals: */
-    let x1: ZeroPaddedSignal<u32> = ZeroPaddedSignal { values: vec![42,7,11] };
+    let x1: ZeroPaddedSignal<u32> = ZeroPaddedSignal {
+      values: vec![42,7,11]
+    };
     /* Test size method: */
     assert_eq!( 3, x1.size());
     /* Test get method: */
@@ -114,8 +116,14 @@ mod tests {
   #[test]
   fn linear_prediction() {
     /* Create test signals: */
-    let x2: ZeroPaddedSignal<f64> = ZeroPaddedSignal { values: vec![1.,1.,1.,1.,1.,1.] };
+    let x2: ZeroPaddedSignal<f64> = ZeroPaddedSignal {
+      values: vec![1.,1.,1.,1.,1.,1.]
+    };
     /* Test linear_prediction method: */
-    assert_eq_floatvec!(vec![0.,0.8,0.8,0.8,0.7,0.7,0.7,-0.1,-0.1,-0.1], x2.linear_prediction(vec![0.8,0.,0.,-0.1]).values, 1e-15);
+    assert_eq_floatvec!(
+      vec![0.,0.8,0.8,0.8,0.7,0.7,0.7,-0.1,-0.1,-0.1],
+      x2.linear_prediction(vec![0.8,0.,0.,-0.1]).values,
+      1e-15
+    );
   }
 }

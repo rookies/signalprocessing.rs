@@ -1,5 +1,12 @@
 extern crate num;
 
+/**
+  Models an infinite signal, negative indices return
+  always zero (to ensure causality of the signal),
+  uninitialized positive indices, too.
+  Can be used with any type that implements
+  num::traits::Num and Clone.
+*/
 #[allow(dead_code)]
 pub struct ZeroPaddedSignal<T> {
   values: Vec<T>,

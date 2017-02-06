@@ -17,3 +17,4 @@ This is a small Rust library for Signal Processing algorithms, my first Rust pro
 * discrete Fourier transform
 * inverse discrete Fourier transform
 * maximum length sequence generator
+* operators (+,-,*,/,...) for ZeroPaddedSignal

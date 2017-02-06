@@ -86,6 +86,21 @@ impl<T: num::traits::Num + Clone> ZeroPaddedSignal<T> {
     let x: ZeroPaddedSignal<T> = ZeroPaddedSignal { values: vals };
     x
   }
+
+  /**
+    Sets the signal value at the given index. If there's
+    a gap between the last initialized index and the given
+    one, the values between are initialized with zero.
+  */
+  #[allow(dead_code)]
+  pub fn set(&mut self, idx: usize, val: T) {
+    /* Initialize the gap values with zero, if necessary: */
+    for _ in self.size()..(idx+1) {
+      self.values.push(T::zero());
+    }
+    /* Set the new value: */
+    self.values[idx] = val;
+  }
 }
 
 #[cfg(test)]
@@ -95,7 +110,7 @@ mod tests {
   #[test]
   fn zero_padded_signal() {
     /* Create test signals: */
-    let x1: ZeroPaddedSignal<u32> = ZeroPaddedSignal {
+    let mut x1: ZeroPaddedSignal<u32> = ZeroPaddedSignal {
       values: vec![42,7,11]
     };
     /* Test size method: */
@@ -111,6 +126,13 @@ mod tests {
     /* Test to_vector method: */
     assert_eq!(vec![0,0,0,42,7,11,0], x1.to_vector(-3,3));
     assert_eq!(0, x1.to_vector(3,-3).len());
+    /* Test set method: */
+    x1.set(0, 5);
+    assert_eq!(vec![5,7,11], x1.values);
+    x1.set(5, 12);
+    assert_eq!(vec![5,7,11,0,0,12], x1.values);
+    x1.set(6,100);
+    assert_eq!(vec![5,7,11,0,0,12,100], x1.values);
   }
   
   #[test]

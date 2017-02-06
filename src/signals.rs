@@ -91,29 +91,6 @@ impl<T: num::traits::Num + Clone> ZeroPaddedSignal<T> {
 #[cfg(test)]
 mod tests {
 	use super::ZeroPaddedSignal;
-
-	macro_rules! assert_eq_floatvec {
-		($ left: expr, $ right: expr, $ err: expr) => ({
-			match (&($ left) , &($ right), &($ err)) {
-				(left_val, right_val, err) => {
-					if ! (left_val.len() == right_val.len()) {
-						panic!("assert_eq_floatvec failed: \
-							`left.len() == right.len()` \
-							(left.len(): `{:?}`, right.len(): `{:?}`)",
-							left_val.len(), right_val.len())
-					}
-					for i in 0..left_val.len() {
-						if ! ((left_val[i]-right_val[i]).abs() <= *err) {
-							panic!("assert_eq_floatvec failed: \
-								`abs(left-right) <= err` \
-								(left: `{:?}`, right: `{:?}`, err: `{:?}`)",
-								left_val[i], right_val[i], err)
-						}
-					}
-				}
-			}
-		})
-	}
 	
 	#[test]
 	fn zero_padded_signal() {
@@ -131,6 +108,7 @@ mod tests {
 		assert_eq!( 0, x1.get(-100));
 		/* Test to_vector method: */
 		assert_eq!(vec![0,0,0,42,7,11,0], x1.to_vector(-3,3));
+		assert_eq!(0, x1.to_vector(3,-3).len());
 	}
 
 	#[test]

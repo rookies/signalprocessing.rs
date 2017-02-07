@@ -122,9 +122,7 @@ pub struct PeriodicSignal<T> {
   values: Vec<T>,
 }
 
-/* TODO: Remove Debug? */
-use std::fmt;
-impl<T: num::traits::Num + Clone + fmt::Debug> PeriodicSignal<T> {
+impl<T: num::traits::Num + Clone> PeriodicSignal<T> {
   /**
     Returns the number of initialized values,
     which is a period of the signal, but not
@@ -183,7 +181,6 @@ impl<T: num::traits::Num + Clone + fmt::Debug> PeriodicSignal<T> {
   */
   #[allow(dead_code)]
   pub fn period(&self) -> usize {
-    /* TODO: Only factors of size() possible! */
     /* Iterate over all possible periods: */
     for period in 1..self.size() {
       /* Check if this period is factor of the size: */
@@ -195,13 +192,15 @@ impl<T: num::traits::Num + Clone + fmt::Debug> PeriodicSignal<T> {
       let val = &self.values[0..period];
       let mut failed: bool = false;
       while offset <= self.size()-period {
-        //println!("{} {} {:?} {:?}", period, offset, val, &self.values[offset..(offset+period)]);
+        /* Check equality: */
         if ! (val == &self.values[offset..(offset+period)]) {
           failed = true;
           break;
         }
+        /* Go to next offset: */
         offset += period;
       }
+      /* If all values match, return the period: */
       if !failed {
         return period;
       }
@@ -210,6 +209,7 @@ impl<T: num::traits::Num + Clone + fmt::Debug> PeriodicSignal<T> {
     self.size()
   }
   
+  /* TODO: Implement method. */
   /*
     Sets the signal value at the given index. If there's
     a gap between the last initialized index and the given

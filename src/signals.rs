@@ -111,6 +111,122 @@ impl<T: num::traits::Num + Clone> ZeroPaddedSignal<T> {
 }
 
 /**
+  Models an infinite, periodic signal.
+  Can be used with any type that implements
+  num::traits::Num and Clone.
+  At the moment, only even signals (a[-k] = a[k])
+  are possible.
+*/
+#[allow(dead_code)]
+pub struct PeriodicSignal<T> {
+  values: Vec<T>,
+}
+
+/* TODO: Remove Debug? */
+use std::fmt;
+impl<T: num::traits::Num + Clone + fmt::Debug> PeriodicSignal<T> {
+  /**
+    Returns the number of initialized values,
+    which is a period of the signal, but not
+    necessarily the smallest.
+  */
+  #[allow(dead_code)]
+  pub fn size(&self) -> usize {
+    self.values.len()
+  }
+  
+  /**
+    Returns the value at the given index.
+  */
+  #[allow(dead_code)]
+  pub fn get(&self, idx: isize) -> T {
+    /* Move the index to a positive value and cast to unsigned: */
+    let mut idx = idx;
+    while idx < 0 {
+      idx += self.values.len() as isize;
+    }
+    let mut idx = idx as usize;
+    /* Move the index into the first period: */
+    while idx >= self.values.len() {
+      idx -= self.values.len();
+    }
+    /* Return the value: */
+    if let Some(v) = self.values.get(idx).cloned() {
+      v
+    } else {
+      T::zero()
+    }
+  }
+  
+  /**
+    Returns a vector of signal values, starting with index start,
+    ending with index end.
+    TODO: Share implementation with ZeroPaddedSignal.
+  */
+  #[allow(dead_code)]
+  pub fn to_vector(&self, start: isize, end: isize) -> Vec<T> {
+    /* Create an empty vector: */
+    let mut x: Vec<T> = Vec::new();
+    /* Loop through the given range: */
+    for i in start..(end+1) {
+      /* Add the values to the vector: */
+      x.push(self.get(i));
+    }
+    /* Make the vector immutable: */
+    let x = x;
+    /* Return the vector: */
+    x
+  }
+  
+  /**
+    Calculates the smallest period of the signal.
+  */
+  #[allow(dead_code)]
+  pub fn period(&self) -> usize {
+    /* TODO: Only factors of size() possible! */
+    /* Iterate over all possible periods: */
+    for period in 1..self.size() {
+      /* Check if this period is factor of the size: */
+      if self.size() % period != 0 {
+        continue;
+      }
+      /* Iterate over the offsets: */
+      let mut offset: usize = period;
+      let val = &self.values[0..period];
+      let mut failed: bool = false;
+      while offset <= self.size()-period {
+        //println!("{} {} {:?} {:?}", period, offset, val, &self.values[offset..(offset+period)]);
+        if ! (val == &self.values[offset..(offset+period)]) {
+          failed = true;
+          break;
+        }
+        offset += period;
+      }
+      if !failed {
+        return period;
+      }
+    }
+    /* No smaller period found, return size: */
+    self.size()
+  }
+  
+  /*
+    Sets the signal value at the given index. If there's
+    a gap between the last initialized index and the given
+    one, the values between are initialized with zero.
+  */
+  /*#[allow(dead_code)]
+  pub fn set(&mut self, idx: usize, val: T) {
+    /* Initialize the gap values with zero, if necessary: */
+    for _ in self.size()..(idx+1) {
+      self.values.push(T::zero());
+    }
+    /* Set the new value: */
+    self.values[idx] = val;
+  }*/
+}
+
+/**
   Models a maximum length sequence generator.
 */
 #[allow(dead_code)]
@@ -269,6 +385,7 @@ impl<T: num::traits::Num + Copy> MaximumLengthSequence<T> {
 mod tests {
   use super::ZeroPaddedSignal;
   use super::MaximumLengthSequence;
+  use super::PeriodicSignal;
   
   #[test]
   fn zero_padded_signal() {
@@ -311,7 +428,26 @@ mod tests {
       1e-15
     );
   }
-
+  
+  #[test]
+  fn periodic_signal() {
+    /* Create test signals: */
+    let x1: PeriodicSignal<u8> = PeriodicSignal {
+      values: vec![1,1,1,1]
+    };
+    let x2: PeriodicSignal<u8> = PeriodicSignal {
+      values: vec![1,0,1,0]
+    };
+    let x3: PeriodicSignal<u8> = PeriodicSignal {
+      values: vec![1,0,1,1]
+    };
+    /* TODO: Check other methods */
+    /* Check period method: */
+    assert_eq!(1, x1.period());
+    assert_eq!(2, x2.period());
+    assert_eq!(4, x3.period());
+  }
+  
   #[test]
   fn maximum_length_sequence1() {
     /* Create test sequences: */
@@ -451,10 +587,16 @@ mod tests {
     ];
     /* Test the sequences: */
     for i in 0..vals.len() {
+      /* Equal values: */
       let x: MaximumLengthSequence<u8> =
         MaximumLengthSequence::new_predefined(
           (i+1) as u8, vec![true;i+1]);
-      assert_eq!(vals[i], x.to_vector());
+      let v: Vec<u8> = x.to_vector();
+      assert_eq!(vals[i], v);
+      /* Correct period: */
+      let y: PeriodicSignal<u8> =
+        PeriodicSignal { values: v };
+      assert_eq!((2u32.pow((i+1) as u32) as usize)-1, y.period());
     }
   }
 }

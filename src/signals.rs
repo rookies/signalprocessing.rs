@@ -166,7 +166,8 @@ impl<T: num::traits::Num + Copy> MaximumLengthSequence<T> {
       x = self.val_false;
     }
     /* Set the new state: */
-    self.state = MaximumLengthSequence::<T>::next_state(&self.state);
+    self.state = MaximumLengthSequence::<T>::next_state(&self.state,
+      &self.coefficients);
     /* Return the value: */
     x
   }
@@ -190,7 +191,8 @@ impl<T: num::traits::Num + Copy> MaximumLengthSequence<T> {
         x.push(self.val_false);
       }
       /* And set the new state: */
-      state = MaximumLengthSequence::<T>::next_state(&state);
+      state = MaximumLengthSequence::<T>::next_state(&state,
+        &self.coefficients);
     }
     /* Make the vector immutable and return it: */
     let x = x;
@@ -200,13 +202,16 @@ impl<T: num::traits::Num + Copy> MaximumLengthSequence<T> {
   /**
     Returns the next state for the given one.
   */
-  fn next_state(state: &Vec<bool>) -> Vec<bool> {
+  fn next_state(state: &Vec<bool>, coefficients: &Vec<bool>)
+    -> Vec<bool> {
     /* Create a new state vector: */
     let mut new_state: Vec<bool> = Vec::new();
     /* Create the new first value: */
     let mut first: bool = state[state.len()-1];
-    for i in 1..(state.len()-1) {
-      first ^= state[i];
+    for i in 0..(state.len()-1) {
+      if coefficients[i] {
+        first ^= state[state.len()-(i+2)];
+      }
     }
     new_state.push(first);
     /* Shift the other values through: */

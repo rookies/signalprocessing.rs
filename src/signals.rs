@@ -145,110 +145,44 @@ impl<T: num::traits::Num + Copy> MaximumLengthSequence<T> {
   }
   
   /**
-    Creates a new instance using the polynom
+    Creates a new instance using a pre-defined polynom
+    and the given initial state.
+    Used polynoms:
       p(x) = x + 1
-    and the given initial state.
-  */
-  #[allow(dead_code)]
-  pub fn new_order1(state: Vec<bool>) -> MaximumLengthSequence<T> {
-    MaximumLengthSequence::<T>::new(vec![], state)
-  }
-  
-  /**
-    Creates a new instance using the polynom
       p(x) = x^2 + x + 1
-    and the given initial state.
-  */
-  #[allow(dead_code)]
-  pub fn new_order2(state: Vec<bool>) -> MaximumLengthSequence<T> {
-    MaximumLengthSequence::<T>::new(vec![true], state)
-  }
-  
-  /**
-    Creates a new instance using the polynom
       p(x) = x^3 + x + 1
-    and the given initial state.
-  */
-  #[allow(dead_code)]
-  pub fn new_order3(state: Vec<bool>) -> MaximumLengthSequence<T> {
-    MaximumLengthSequence::<T>::new(vec![true,false], state)
-  }
-  
-  /**
-    Creates a new instance using the polynom
       p(x) = x^4 + x + 1
-    and the given initial state.
-  */
-  #[allow(dead_code)]
-  pub fn new_order4(state: Vec<bool>) -> MaximumLengthSequence<T> {
-    MaximumLengthSequence::<T>::new(vec![true,false,false], state)
-  }
-  
-  /**
-    Creates a new instance using the polynom
       p(x) = x^5 + x^2 + 1
-    and the given initial state.
-  */
-  #[allow(dead_code)]
-  pub fn new_order5(state: Vec<bool>) -> MaximumLengthSequence<T> {
-    MaximumLengthSequence::<T>::new(
-      vec![false,true,false,false], state)
-  }
-  
-  /**
-    Creates a new instance using the polynom
       p(x) = x^6 + x + 1
-    and the given initial state.
-  */
-  #[allow(dead_code)]
-  pub fn new_order6(state: Vec<bool>) -> MaximumLengthSequence<T> {
-    MaximumLengthSequence::<T>::new(
-      vec![true,false,false,false,false], state)
-  }
-  
-  /**
-    Creates a new instance using the polynom
       p(x) = x^7 + x + 1
-    and the given initial state.
-  */
-  #[allow(dead_code)]
-  pub fn new_order7(state: Vec<bool>) -> MaximumLengthSequence<T> {
-    MaximumLengthSequence::<T>::new(
-      vec![true,false,false,false,false,false], state)
-  }
-  
-  /**
-    Creates a new instance using the polynom
       p(x) = x^8 + x^6 + x^5 + x + 1
-    and the given initial state.
-  */
-  #[allow(dead_code)]
-  pub fn new_order8(state: Vec<bool>) -> MaximumLengthSequence<T> {
-    MaximumLengthSequence::<T>::new(
-      vec![true,false,false,false,true,true,false], state)
-  }
-  
-  /**
-    Creates a new instance using the polynom
       p(x) = x^9 + x^4 + 1
-    and the given initial state.
-  */
-  #[allow(dead_code)]
-  pub fn new_order9(state: Vec<bool>) -> MaximumLengthSequence<T> {
-    MaximumLengthSequence::<T>::new(
-      vec![false,false,false,true,false,false,false,false], state)
-  }
-  
-  /**
-    Creates a new instance using the polynom
       p(x) = x^10 + x^3 + 1
-    and the given initial state.
   */
   #[allow(dead_code)]
-  pub fn new_order10(state: Vec<bool>) -> MaximumLengthSequence<T> {
-    MaximumLengthSequence::<T>::new(
-      vec![false,false,true,false,false,false,false,false,false],
-      state)
+  pub fn new_predefined(order: u8, state: Vec<bool>)
+    -> MaximumLengthSequence<T> {
+    match order {
+      1 => MaximumLengthSequence::<T>::new(vec![], state),
+      2 => MaximumLengthSequence::<T>::new(vec![true], state),
+      3 => MaximumLengthSequence::<T>::new(vec![true,false], state),
+      4 => MaximumLengthSequence::<T>::new(
+        vec![true,false,false], state),
+      5 => MaximumLengthSequence::<T>::new(
+        vec![false,true,false,false], state),
+      6 => MaximumLengthSequence::<T>::new(
+        vec![true,false,false,false,false], state),
+      7 => MaximumLengthSequence::<T>::new(
+        vec![true,false,false,false,false,false], state),
+      8 => MaximumLengthSequence::<T>::new(
+        vec![true,false,false,false,true,true,false], state),
+      9 => MaximumLengthSequence::<T>::new(
+        vec![false,false,false,true,false,false,false,false], state),
+      10 => MaximumLengthSequence::<T>::new(
+        vec![false,false,true,false,false,false,false,false,false],
+        state),
+      _ => panic!("Sorry, no polynom for order {}, yet.", order)
+    }
   }
   
   /**
@@ -436,33 +370,27 @@ mod tests {
 
   #[test]
   fn maximum_length_sequence5() {
-    /* Creates test sequences: */
+    /* Create test sequences: */
     let x1: MaximumLengthSequence<u8> =
-      MaximumLengthSequence::new_order1(vec![true]);
+      MaximumLengthSequence::new_predefined(1, vec![true]);
     let x2: MaximumLengthSequence<u8> =
-      MaximumLengthSequence::new_order2(vec![true,true]);
+      MaximumLengthSequence::new_predefined(2, vec![true;2]);
     let x3: MaximumLengthSequence<u8> =
-      MaximumLengthSequence::new_order3(vec![true,true,true]);
+      MaximumLengthSequence::new_predefined(3, vec![true;3]);
     let x4: MaximumLengthSequence<u8> =
-      MaximumLengthSequence::new_order4(vec![true,true,true,true]);
+      MaximumLengthSequence::new_predefined(4, vec![true;4]);
     let x5: MaximumLengthSequence<u8> =
-      MaximumLengthSequence::new_order5(
-        vec![true,true,true,true,true]);
+      MaximumLengthSequence::new_predefined(5, vec![true;5]);
     let x6: MaximumLengthSequence<u8> =
-      MaximumLengthSequence::new_order6(
-        vec![true,true,true,true,true,true]);
+      MaximumLengthSequence::new_predefined(6, vec![true;6]);
     let x7: MaximumLengthSequence<u8> =
-      MaximumLengthSequence::new_order7(
-        vec![true,true,true,true,true,true,true]);
+      MaximumLengthSequence::new_predefined(7, vec![true;7]);
     let x8: MaximumLengthSequence<u8> =
-      MaximumLengthSequence::new_order8(
-        vec![true,true,true,true,true,true,true,true]);
+      MaximumLengthSequence::new_predefined(8, vec![true;8]);
     let x9: MaximumLengthSequence<u8> =
-      MaximumLengthSequence::new_order9(
-        vec![true,true,true,true,true,true,true,true,true]);
+      MaximumLengthSequence::new_predefined(9, vec![true;9]);
     let x10: MaximumLengthSequence<u8> =
-      MaximumLengthSequence::new_order10(
-        vec![true,true,true,true,true,true,true,true,true,true]);
+      MaximumLengthSequence::new_predefined(10, vec![true;10]);
     /* Test generated vectors: */
     assert_eq!(vec![1], x1.to_vector());
     assert_eq!(vec![1,1,0], x2.to_vector());

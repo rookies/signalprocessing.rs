@@ -125,7 +125,7 @@ impl<T: num::traits::Num + Copy> MaximumLengthSequence<T> {
   /**
     Creates a new instance using the given coefficients
     and the given initial state.
-    Example polynom: f(x) = x^4 + a3*x^3 + a2*x^2 + a1*x + 1
+    Example polynom: p(x) = x^4 + a3*x^3 + a2*x^2 + a1*x + 1
       leads to coefficients: [a1,a2,a3]
   */
   #[allow(dead_code)]
@@ -145,6 +145,113 @@ impl<T: num::traits::Num + Copy> MaximumLengthSequence<T> {
   }
   
   /**
+    Creates a new instance using the polynom
+      p(x) = x + 1
+    and the given initial state.
+  */
+  #[allow(dead_code)]
+  pub fn new_order1(state: Vec<bool>) -> MaximumLengthSequence<T> {
+    MaximumLengthSequence::<T>::new(vec![], state)
+  }
+  
+  /**
+    Creates a new instance using the polynom
+      p(x) = x^2 + x + 1
+    and the given initial state.
+  */
+  #[allow(dead_code)]
+  pub fn new_order2(state: Vec<bool>) -> MaximumLengthSequence<T> {
+    MaximumLengthSequence::<T>::new(vec![true], state)
+  }
+  
+  /**
+    Creates a new instance using the polynom
+      p(x) = x^3 + x + 1
+    and the given initial state.
+  */
+  #[allow(dead_code)]
+  pub fn new_order3(state: Vec<bool>) -> MaximumLengthSequence<T> {
+    MaximumLengthSequence::<T>::new(vec![true,false], state)
+  }
+  
+  /**
+    Creates a new instance using the polynom
+      p(x) = x^4 + x + 1
+    and the given initial state.
+  */
+  #[allow(dead_code)]
+  pub fn new_order4(state: Vec<bool>) -> MaximumLengthSequence<T> {
+    MaximumLengthSequence::<T>::new(vec![true,false,false], state)
+  }
+  
+  /**
+    Creates a new instance using the polynom
+      p(x) = x^5 + x^2 + 1
+    and the given initial state.
+  */
+  #[allow(dead_code)]
+  pub fn new_order5(state: Vec<bool>) -> MaximumLengthSequence<T> {
+    MaximumLengthSequence::<T>::new(
+      vec![false,true,false,false], state)
+  }
+  
+  /**
+    Creates a new instance using the polynom
+      p(x) = x^6 + x + 1
+    and the given initial state.
+  */
+  #[allow(dead_code)]
+  pub fn new_order6(state: Vec<bool>) -> MaximumLengthSequence<T> {
+    MaximumLengthSequence::<T>::new(
+      vec![true,false,false,false,false], state)
+  }
+  
+  /**
+    Creates a new instance using the polynom
+      p(x) = x^7 + x + 1
+    and the given initial state.
+  */
+  #[allow(dead_code)]
+  pub fn new_order7(state: Vec<bool>) -> MaximumLengthSequence<T> {
+    MaximumLengthSequence::<T>::new(
+      vec![true,false,false,false,false,false], state)
+  }
+  
+  /**
+    Creates a new instance using the polynom
+      p(x) = x^8 + x^6 + x^5 + x + 1
+    and the given initial state.
+  */
+  #[allow(dead_code)]
+  pub fn new_order8(state: Vec<bool>) -> MaximumLengthSequence<T> {
+    MaximumLengthSequence::<T>::new(
+      vec![true,false,false,false,true,true,false], state)
+  }
+  
+  /**
+    Creates a new instance using the polynom
+      p(x) = x^9 + x^4 + 1
+    and the given initial state.
+  */
+  #[allow(dead_code)]
+  pub fn new_order9(state: Vec<bool>) -> MaximumLengthSequence<T> {
+    MaximumLengthSequence::<T>::new(
+      vec![false,false,false,true,false,false,false,false], state)
+  }
+  
+  /**
+    Creates a new instance using the polynom
+      p(x) = x^10 + x^3 + 1
+    and the given initial state.
+  */
+  #[allow(dead_code)]
+  pub fn new_order10(state: Vec<bool>) -> MaximumLengthSequence<T> {
+    MaximumLengthSequence::<T>::new(
+      vec![false,false,true,false,false,false,false,false,false],
+      state)
+  }
+  
+  /**
     Sets the two values the sequence can be.
   */
   #[allow(dead_code)]
@@ -152,7 +259,7 @@ impl<T: num::traits::Num + Copy> MaximumLengthSequence<T> {
     self.val_false = val_false;
     self.val_true = val_true;
   }
-
+  
   /**
     Returns the next value and switches to the next state.
   */
@@ -325,5 +432,110 @@ mod tests {
     }
     /* Test to_vector method: */
     assert_eq!(vec![5,5,-5,-5,5,-5,5], x1.to_vector());
+  }
+
+  #[test]
+  fn maximum_length_sequence5() {
+    /* Creates test sequences: */
+    let x1: MaximumLengthSequence<u8> =
+      MaximumLengthSequence::new_order1(vec![true]);
+    let x2: MaximumLengthSequence<u8> =
+      MaximumLengthSequence::new_order2(vec![true,true]);
+    let x3: MaximumLengthSequence<u8> =
+      MaximumLengthSequence::new_order3(vec![true,true,true]);
+    let x4: MaximumLengthSequence<u8> =
+      MaximumLengthSequence::new_order4(vec![true,true,true,true]);
+    let x5: MaximumLengthSequence<u8> =
+      MaximumLengthSequence::new_order5(
+        vec![true,true,true,true,true]);
+    let x6: MaximumLengthSequence<u8> =
+      MaximumLengthSequence::new_order6(
+        vec![true,true,true,true,true,true]);
+    let x7: MaximumLengthSequence<u8> =
+      MaximumLengthSequence::new_order7(
+        vec![true,true,true,true,true,true,true]);
+    let x8: MaximumLengthSequence<u8> =
+      MaximumLengthSequence::new_order8(
+        vec![true,true,true,true,true,true,true,true]);
+    let x9: MaximumLengthSequence<u8> =
+      MaximumLengthSequence::new_order9(
+        vec![true,true,true,true,true,true,true,true,true]);
+    let x10: MaximumLengthSequence<u8> =
+      MaximumLengthSequence::new_order10(
+        vec![true,true,true,true,true,true,true,true,true,true]);
+    /* Test generated vectors: */
+    assert_eq!(vec![1], x1.to_vector());
+    assert_eq!(vec![1,1,0], x2.to_vector());
+    assert_eq!(vec![1,1,1,0,0,1,0], x3.to_vector());
+    assert_eq!(vec![1,1,1,1,0,0,0,1,0,0,1,1,0,1,0], x4.to_vector());
+    assert_eq!(vec![1,1,1,1,1,0,0,0,1,1,0,1,1,1,0,1,0,1,0,0,0,0,1,0,0,
+      1,0,1,1,0,0], x5.to_vector());
+    assert_eq!(vec![1,1,1,1,1,1,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,1,0,1,0,
+      0,1,1,1,1,0,1,0,0,0,1,1,1,0,0,1,0,0,1,0,1,1,0,1,1,1,0,1,1,0,0,1,
+      1,0,1,0,1,0], x6.to_vector());
+    assert_eq!(vec![1,1,1,1,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,1,1,0,0,0,0,
+      1,0,1,0,0,0,1,1,1,1,0,0,1,0,0,0,1,0,1,1,0,0,1,1,1,0,1,0,1,0,0,1,
+      1,1,1,1,0,1,0,0,0,0,1,1,1,0,0,0,1,0,0,1,0,0,1,1,0,1,1,0,1,0,1,1,
+      0,1,1,1,1,0,1,1,0,0,0,1,1,0,1,0,0,1,0,1,1,1,0,1,1,1,0,0,1,1,0,0,
+      1,0,1,0,1,0],x7.to_vector());
+    assert_eq!(vec![1,1,1,1,1,1,1,1,0,0,1,0,1,1,1,1,0,1,0,0,1,0,1,0,0,
+      0,0,1,1,0,1,1,1,0,1,1,0,1,1,1,1,1,0,1,0,1,1,1,0,1,0,0,0,0,0,1,1,
+      0,0,1,0,1,0,1,0,1,0,0,0,1,1,0,1,0,1,1,0,0,0,1,1,0,0,0,0,0,1,0,0,
+      1,0,1,1,0,1,1,0,1,0,1,0,0,1,1,0,1,0,0,1,1,1,1,1,1,0,1,1,1,0,0,1,
+      1,0,0,1,1,1,1,0,1,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,1,1,1,0,0,1,0,0,
+      1,0,0,1,1,0,0,0,1,0,0,1,1,1,0,1,0,1,0,1,1,0,1,0,0,0,1,0,0,0,1,0,
+      1,0,0,1,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,1,0,1,1,1,0,0,0,1,1,1,0,1,
+      1,1,1,0,0,0,1,0,1,1,0,0,1,1,0,1,1,0,0,0,0,1,1,1,1,0,0,1,1,1,0,0,
+      0,0,1,0,1,0], x8.to_vector());
+    assert_eq!(vec![1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,1,1,1,0,1,1,1,1,1,0,
+      0,0,1,0,1,1,1,0,0,1,1,0,0,1,0,0,0,0,0,1,0,0,1,0,1,0,0,1,1,1,0,1,
+      1,0,1,0,0,0,1,1,1,1,0,0,1,1,1,1,1,0,0,1,1,0,1,1,0,0,0,1,0,1,0,1,
+      0,0,1,0,0,0,1,1,1,0,0,0,1,1,0,1,1,0,1,0,1,0,1,1,1,0,0,0,1,0,0,1,
+      1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1,1,0,0,0,0,
+      1,0,0,1,1,1,0,0,1,0,1,0,1,0,1,1,0,0,0,0,1,1,0,1,1,1,1,0,1,0,0,1,
+      1,0,1,1,1,0,0,1,0,0,0,1,0,1,0,0,0,0,1,0,1,0,1,1,0,1,0,0,1,1,1,1,
+      1,1,0,1,1,0,0,1,0,0,1,0,0,1,0,1,1,0,1,1,1,1,1,1,0,0,1,0,0,1,1,0,
+      1,0,1,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,1,1,0,0,0,1,1,0,0,1,0,1,0,0,
+      0,1,1,0,1,0,0,1,0,1,1,1,1,1,1,1,0,1,0,0,0,1,0,1,1,0,0,0,1,1,1,0,
+      1,0,1,1,0,0,1,0,1,1,0,0,1,1,1,1,0,0,0,1,1,1,1,1,0,1,1,1,0,1,0,0,
+      0,0,0,1,1,0,1,0,1,1,0,1,1,0,1,1,1,0,1,1,0,0,0,0,0,1,0,1,1,0,1,0,
+      1,1,1,1,1,0,1,0,1,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,1,1,1,1,
+      0,0,1,0,1,1,1,0,1,1,1,0,0,0,0,0,0,1,1,1,0,0,1,1,1,0,1,0,0,1,0,0,
+      1,1,1,1,0,1,0,1,1,1,0,1,0,1,0,0,0,1,0,0,1,0,0,0,0,1,1,0,0,1,1,1,
+      0,0,0,0,1,0,1,1,1,1,0,1,1,0,1,1,0,0,1,1,0,1,0,0,0,0,1,1,1,0,1,1,
+      1,1,0,0,0,0], x9.to_vector());
+    assert_eq!(vec![1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,1,
+      1,1,1,1,1,0,1,1,1,0,0,0,1,0,0,1,1,1,1,1,0,0,0,1,1,0,0,1,1,1,1,1,
+      0,1,0,1,1,0,0,1,0,1,1,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,
+      0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,1,1,0,0,1,0,0,1,1,0,1,0,0,0,0,
+      1,0,0,1,0,1,0,1,0,0,0,0,1,1,1,1,0,1,0,1,1,1,0,1,0,1,1,0,1,1,0,1,
+      1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,1,1,0,0,1,1,0,0,0,0,1,0,1,
+      0,1,1,0,1,0,1,1,1,0,0,0,1,1,0,1,1,1,1,1,1,0,0,0,1,0,0,0,1,1,1,1,
+      0,0,1,1,1,1,0,1,1,0,1,1,0,1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1,0,1,1,
+      0,1,0,1,0,1,0,0,0,1,1,1,1,1,0,1,1,1,1,0,0,1,0,0,1,0,1,1,0,0,0,0,
+      0,1,0,0,1,1,0,0,1,0,0,0,1,0,1,0,0,0,1,1,0,1,1,0,1,1,1,0,0,0,0,0,
+      0,1,1,1,1,0,0,0,1,1,1,0,1,1,1,1,1,1,1,0,0,1,0,0,0,0,1,1,0,0,0,1,
+      0,1,1,0,1,1,1,0,1,0,0,0,0,1,1,0,1,0,1,0,1,1,0,0,1,1,1,1,0,0,1,0,
+      1,1,0,1,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1,1,0,0,0,0,0,0,1,
+      0,1,1,0,0,0,1,0,1,0,0,1,1,1,0,1,1,0,0,1,1,1,0,0,0,1,0,1,1,1,1,1,
+      1,0,1,0,1,0,0,0,1,0,1,1,1,0,1,1,0,1,0,1,1,0,0,0,0,1,1,0,0,1,1,0,
+      1,1,0,1,0,1,0,0,0,0,0,1,1,1,0,1,0,0,1,1,1,1,0,1,0,0,1,1,0,1,0,1,
+      0,0,1,0,0,1,1,1,0,0,0,0,0,1,1,1,1,1,0,0,1,1,1,0,0,1,1,0,1,1,1,1,
+      0,1,0,0,0,1,0,1,0,1,0,1,1,0,1,1,1,1,1,0,0,0,0,1,0,0,1,1,1,0,1,0,
+      0,0,1,1,1,0,1,0,1,1,1,1,1,0,1,1,0,1,0,0,1,0,0,0,0,1,0,0,0,0,1,0,
+      1,0,0,1,0,1,0,1,1,0,0,0,1,1,1,0,0,1,1,1,1,1,1,1,0,1,1,0,0,0,0,1,
+      0,0,0,1,1,0,1,0,0,1,1,1,0,0,1,0,0,1,1,1,1,0,0,0,0,1,1,0,1,1,1,0,
+      1,1,0,0,0,1,1,0,0,0,1,1,1,1,0,1,1,1,1,1,0,1,0,0,1,0,0,1,0,1,0,0,
+      0,0,0,0,1,1,0,1,0,0,0,1,1,0,0,1,0,1,1,1,0,1,0,0,1,0,1,1,0,1,0,0,
+      0,1,0,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,0,1,0,0,1,0,0,0,1,1,0,0,0,0,
+      1,1,1,0,1,1,0,1,1,1,1,0,0,0,0,0,1,0,1,1,1,0,0,1,0,1,0,1,1,1,0,0,
+      1,1,1,0,1,1,1,0,1,1,1,0,0,1,1,0,0,1,1,1,0,1,0,1,0,1,1,1,0,1,1,1,
+      1,0,1,1,0,0,1,0,1,0,0,0,1,0,0,1,1,0,1,1,0,0,0,1,0,0,0,0,1,1,1,0,
+      0,1,0,1,1,1,1,1,0,0,1,0,1,0,0,1,1,0,0,1,1,0,0,1,0,1,0,1,0,1,0,0,
+      1,1,1,1,1,1,0,0,1,1,0,0,0,1,1,0,1,0,1,1,1,1,0,0,1,1,0,1,0,1,1,0,
+      1,0,0,1,1,0,0,0,1,0,0,1,0,1,1,1,0,0,0,0,1,0,1,1,1,1,0,1,0,1,0,1,
+      0,1,0,1,1,1,1,1,1,1,1,0,1,0,0,0,0,0,1,0,1,0,1,0,0,1,0,1,1,1,1,0,
+      0,0,1,0,1,0,1,1,1,1,0,1,1,1,0,1,0,1,0,0,1,1,0,1,1,1,0,0,1,0,0,0,
+      1,1,1,0,0,0], x10.to_vector());
   }
 }

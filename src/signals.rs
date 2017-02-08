@@ -14,6 +14,16 @@ pub struct ZeroPaddedSignal<T> {
 
 impl<T: num::traits::Num + Clone> ZeroPaddedSignal<T> {
   /**
+    Creates a new signal using the given values.
+  */
+  #[allow(dead_code)]
+  pub fn new(values: Vec<T>) -> ZeroPaddedSignal<T> {
+    ZeroPaddedSignal::<T> {
+      values: values
+    }
+  }
+  
+  /**
     Returns the number of initialized values.
   */
   #[allow(dead_code)]
@@ -123,6 +133,16 @@ pub struct PeriodicSignal<T> {
 }
 
 impl<T: num::traits::Num + Clone> PeriodicSignal<T> {
+  /**
+    Creates a new signal using the given values.
+  */
+  #[allow(dead_code)]
+  pub fn new(values: Vec<T>) -> PeriodicSignal<T> {
+    PeriodicSignal::<T> {
+      values: values
+    }
+  }
+  
   /**
     Returns the number of initialized values,
     which is a period of the signal, but not
@@ -386,16 +406,21 @@ mod tests {
   use super::ZeroPaddedSignal;
   use super::MaximumLengthSequence;
   use super::PeriodicSignal;
-  
+
   #[test]
-  fn zero_padded_signal() {
-    /* Create test signals: */
-    let mut x1: ZeroPaddedSignal<u32> = ZeroPaddedSignal {
-      values: vec![42,7,11]
-    };
-    /* Test size method: */
+  fn zero_padded_signal_size() {
+    /* Create test signal: */
+    let x1: ZeroPaddedSignal<u32> =
+      ZeroPaddedSignal::new(vec![42,7,11]);
+    /* Test `size` method: */
     assert_eq!( 3, x1.size());
-    /* Test get method: */
+  }
+  #[test]
+  fn zero_padded_signal_get() {
+    /* Create test signal: */
+    let x1: ZeroPaddedSignal<u32> =
+      ZeroPaddedSignal::new(vec![42,7,11]);
+    /* Test `get` method: */
     assert_eq!( 0, x1.get(  -1));
     assert_eq!(42, x1.get(   0));
     assert_eq!( 7, x1.get(   1));
@@ -403,10 +428,22 @@ mod tests {
     assert_eq!( 0, x1.get(   3));
     assert_eq!( 0, x1.get( 100));
     assert_eq!( 0, x1.get(-100));
-    /* Test to_vector method: */
+  }
+  #[test]
+  fn zero_padded_signal_to_vector() {
+    /* Create test signal: */
+    let x1: ZeroPaddedSignal<u32> =
+      ZeroPaddedSignal::new(vec![42,7,11]);
+    /* Test `to_vector` method: */
     assert_eq!(vec![0,0,0,42,7,11,0], x1.to_vector(-3,3));
     assert_eq!(0, x1.to_vector(3,-3).len());
-    /* Test set method: */
+  }
+  #[test]
+  fn zero_padded_signal_set() {
+    /* Create test signal: */
+    let mut x1: ZeroPaddedSignal<u32> =
+      ZeroPaddedSignal::new(vec![42,7,11]);
+    /* Test `set` method: */
     x1.set(0, 5);
     assert_eq!(vec![5,7,11], x1.values);
     x1.set(5, 12);
@@ -414,14 +451,12 @@ mod tests {
     x1.set(6,100);
     assert_eq!(vec![5,7,11,0,0,12,100], x1.values);
   }
-  
   #[test]
-  fn linear_prediction() {
-    /* Create test signals: */
-    let x1: ZeroPaddedSignal<f64> = ZeroPaddedSignal {
-      values: vec![1.,1.,1.,1.,1.,1.]
-    };
-    /* Test linear_prediction method: */
+  fn zero_padded_signal_linear_prediction() {
+    /* Create test signal: */
+    let x1: ZeroPaddedSignal<f64> =
+      ZeroPaddedSignal::new(vec![1.,1.,1.,1.,1.,1.]);
+    /* Test `linear_prediction` method: */
     assert_eq_floatvec!(
       vec![0.,0.8,0.8,0.8,0.7,0.7,0.7,-0.1,-0.1,-0.1],
       x1.linear_prediction(vec![0.8,0.,0.,-0.1]).values,

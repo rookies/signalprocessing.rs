@@ -161,7 +161,7 @@ mod tests {
   use signals::periodic_signal::PeriodicSignal;
 
   #[test]
-  fn maximum_length_sequence_next() {
+  fn next() {
     /* Create test sequences: */
     /* x^3 + x + 1; init state: 0-1-1 */
     let mut x1: MaximumLengthSequence<u8> =
@@ -180,7 +180,7 @@ mod tests {
     }
   }
   #[test]
-  fn maximum_length_sequence_to_vector() {
+  fn to_vector() {
     /* Create test sequences: */
     /* x^3 + x + 1; init state: 0-1-1 */
     let x1: MaximumLengthSequence<u8> =
@@ -197,19 +197,19 @@ mod tests {
   #[test]
   #[should_panic(expected = "assertion failed: \
     state.len() > 0")]
-  fn maximum_length_sequence_new1() {
+  fn new1() {
     let _: MaximumLengthSequence<u8> = MaximumLengthSequence::new(
       vec![true], vec![]);
   }
   #[test]
   #[should_panic(expected = "assertion failed: \
     `(left == right)` (left: `3`, right: `1`)")]
-  fn maximum_length_sequence_new2() {
+  fn new2() {
     let _: MaximumLengthSequence<u8> = MaximumLengthSequence::new(
       vec![true,false], vec![true]);
   }
   #[test]
-  fn maximum_length_sequence_set_vals() {
+  fn set_vals() {
     /* Create test sequence: */
     /* x^3 + x + 1; init state: 0-1-1 */
     let mut x1: MaximumLengthSequence<i8> =
@@ -220,7 +220,7 @@ mod tests {
     assert_eq!(vec![5,5,-5,-5,5,-5,5], x1.to_vector());
   }
   #[test]
-  fn maximum_length_sequence_new_predefined() {
+  fn new_predefined() {
     /* Create test results: */
     let vals = vec![
       vec![1],

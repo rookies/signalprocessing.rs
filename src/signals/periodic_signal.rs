@@ -129,7 +129,7 @@ mod tests {
   use super::PeriodicSignal;
 
   #[test]
-  fn periodic_signal_size() {
+  fn size() {
     /* Create test signals: */
     let x1: PeriodicSignal<u8> = PeriodicSignal::new(vec![1,1,1,1]);
     let x2: PeriodicSignal<f64> = PeriodicSignal::new(vec![1.]);
@@ -138,7 +138,7 @@ mod tests {
     assert_eq!(1, x2.size());
   }
   #[test]
-  fn periodic_signal_get() {
+  fn get() {
     /* Create test signal: */
     let x1: PeriodicSignal<u8> = PeriodicSignal::new(vec![1,2,3,4]);
     /* Test `get` method: */
@@ -149,7 +149,7 @@ mod tests {
     assert_eq!(1, x1.get(-400));
   }
   #[test]
-  fn periodic_signal_to_vector() {
+  fn to_vector() {
     /* Create test signal: */
     let x1: PeriodicSignal<u8> = PeriodicSignal::new(vec![1,2,3,4]);
     /* Test `to_vector` method: */
@@ -159,7 +159,7 @@ mod tests {
     assert_eq!(vec![4,1,2,3,4], x1.to_vector(-1,3));
   }
   #[test]
-  fn periodic_signal_period() {
+  fn period() {
     /* Create test signals: */
     let x1: PeriodicSignal<u8> = PeriodicSignal::new(vec![1,1,1,1]);
     let x2: PeriodicSignal<u8> = PeriodicSignal::new(vec![1,0,1,0]);

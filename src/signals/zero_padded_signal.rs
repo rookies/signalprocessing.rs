@@ -125,7 +125,7 @@ mod tests {
   use super::ZeroPaddedSignal;
   
   #[test]
-  fn zero_padded_signal_size() {
+  fn size() {
     /* Create test signal: */
     let x1: ZeroPaddedSignal<u32> =
       ZeroPaddedSignal::new(vec![42,7,11]);
@@ -133,7 +133,7 @@ mod tests {
     assert_eq!( 3, x1.size());
   }
   #[test]
-  fn zero_padded_signal_get() {
+  fn get() {
     /* Create test signal: */
     let x1: ZeroPaddedSignal<u32> =
       ZeroPaddedSignal::new(vec![42,7,11]);
@@ -147,7 +147,7 @@ mod tests {
     assert_eq!( 0, x1.get(-100));
   }
   #[test]
-  fn zero_padded_signal_to_vector() {
+  fn to_vector() {
     /* Create test signal: */
     let x1: ZeroPaddedSignal<u32> =
       ZeroPaddedSignal::new(vec![42,7,11]);
@@ -156,7 +156,7 @@ mod tests {
     assert_eq!(0, x1.to_vector(3,-3).len());
   }
   #[test]
-  fn zero_padded_signal_set() {
+  fn set() {
     /* Create test signal: */
     let mut x1: ZeroPaddedSignal<u32> =
       ZeroPaddedSignal::new(vec![42,7,11]);
@@ -169,7 +169,7 @@ mod tests {
     assert_eq!(vec![5,7,11,0,0,12,100], x1.values);
   }
   #[test]
-  fn zero_padded_signal_linear_prediction() {
+  fn linear_prediction() {
     /* Create test signal: */
     let x1: ZeroPaddedSignal<f64> =
       ZeroPaddedSignal::new(vec![1.,1.,1.,1.,1.,1.]);

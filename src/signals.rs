@@ -124,8 +124,6 @@ impl<T: num::traits::Num + Clone> ZeroPaddedSignal<T> {
   Models an infinite, periodic signal.
   Can be used with any type that implements
   num::traits::Num and Clone.
-  At the moment, only even signals (a[-k] = a[k])
-  are possible.
 */
 #[allow(dead_code)]
 pub struct PeriodicSignal<T> {
@@ -463,28 +461,49 @@ mod tests {
       1e-15
     );
   }
-  
   #[test]
-  fn periodic_signal() {
+  fn periodic_signal_size() {
     /* Create test signals: */
-    let x1: PeriodicSignal<u8> = PeriodicSignal {
-      values: vec![1,1,1,1]
-    };
-    let x2: PeriodicSignal<u8> = PeriodicSignal {
-      values: vec![1,0,1,0]
-    };
-    let x3: PeriodicSignal<u8> = PeriodicSignal {
-      values: vec![1,0,1,1]
-    };
-    /* TODO: Check other methods */
-    /* Check period method: */
+    let x1: PeriodicSignal<u8> = PeriodicSignal::new(vec![1,1,1,1]);
+    let x2: PeriodicSignal<f64> = PeriodicSignal::new(vec![1.]);
+    /* Test `size` method: */
+    assert_eq!(4, x1.size());
+    assert_eq!(1, x2.size());
+  }
+  #[test]
+  fn periodic_signal_get() {
+    /* Create test signal: */
+    let x1: PeriodicSignal<u8> = PeriodicSignal::new(vec![1,2,3,4]);
+    /* Test `get` method: */
+    assert_eq!(2, x1.get(1));
+    assert_eq!(4, x1.get(-1));
+    assert_eq!(1, x1.get(4));
+    assert_eq!(1, x1.get(400));
+    assert_eq!(1, x1.get(-400));
+  }
+  #[test]
+  fn periodic_signal_to_vector() {
+    /* Create test signal: */
+    let x1: PeriodicSignal<u8> = PeriodicSignal::new(vec![1,2,3,4]);
+    /* Test `to_vector` method: */
+    assert_eq!(vec![1,2,3,4], x1.to_vector(0,3));
+    assert_eq!(Vec::<u8>::new(), x1.to_vector(3,-3));
+    assert_eq!(vec![1,2,3,4,1], x1.to_vector(0,4));
+    assert_eq!(vec![4,1,2,3,4], x1.to_vector(-1,3));
+  }
+  #[test]
+  fn periodic_signal_period() {
+    /* Create test signals: */
+    let x1: PeriodicSignal<u8> = PeriodicSignal::new(vec![1,1,1,1]);
+    let x2: PeriodicSignal<u8> = PeriodicSignal::new(vec![1,0,1,0]);
+    let x3: PeriodicSignal<u8> = PeriodicSignal::new(vec![1,0,1,1]);
+    /* Check `period` method: */
     assert_eq!(1, x1.period());
     assert_eq!(2, x2.period());
     assert_eq!(4, x3.period());
   }
-  
   #[test]
-  fn maximum_length_sequence1() {
+  fn maximum_length_sequence_next() {
     /* Create test sequences: */
     /* x^3 + x + 1; init state: 0-1-1 */
     let mut x1: MaximumLengthSequence<u8> =
@@ -494,53 +513,56 @@ mod tests {
      let mut x2: MaximumLengthSequence<u8> =
       MaximumLengthSequence::new(vec![true,false],
         vec![true,false,false]);
-    /* Test next method. */
+    /* Test `next` method. */
     for v in vec![1,1,0,0,1,0,1] {
       assert_eq!(v, x1.next());
     }
     for v in vec![0,0,1,0,1,1,1] {
       assert_eq!(v, x2.next());
     }
-    /* Test to_vector method: */
+  }
+  #[test]
+  fn maximum_length_sequence_to_vector() {
+    /* Create test sequences: */
+    /* x^3 + x + 1; init state: 0-1-1 */
+    let x1: MaximumLengthSequence<u8> =
+      MaximumLengthSequence::new(vec![true,false],
+        vec![false,true,true]);
+     /* x^3 + x + 1; init state: 1-0-0 */
+     let x2: MaximumLengthSequence<u8> =
+      MaximumLengthSequence::new(vec![true,false],
+        vec![true,false,false]);
+    /* Test `to_vector` method: */
     assert_eq!(vec![1,1,0,0,1,0,1], x1.to_vector());
     assert_eq!(vec![0,0,1,0,1,1,1], x2.to_vector());
   }
-  
   #[test]
   #[should_panic(expected = "assertion failed: \
     state.len() > 0")]
-  fn maximum_length_sequence2() {
+  fn maximum_length_sequence_new1() {
     let _: MaximumLengthSequence<u8> = MaximumLengthSequence::new(
       vec![true], vec![]);
   }
-
   #[test]
   #[should_panic(expected = "assertion failed: \
     `(left == right)` (left: `3`, right: `1`)")]
-  fn maximum_length_sequence3() {
+  fn maximum_length_sequence_new2() {
     let _: MaximumLengthSequence<u8> = MaximumLengthSequence::new(
       vec![true,false], vec![true]);
   }
-  
   #[test]
-  fn maximum_length_sequence4() {
+  fn maximum_length_sequence_set_vals() {
     /* Create test sequence: */
     /* x^3 + x + 1; init state: 0-1-1 */
     let mut x1: MaximumLengthSequence<i8> =
       MaximumLengthSequence::new(vec![true,false],
         vec![false,true,true]);
-    /* Set values: */
+    /* Test `set_vals` method: */
     x1.set_vals(-5,5);
-    /* Test next method. */
-    for v in vec![5,5,-5,-5,5,-5,5] {
-      assert_eq!(v, x1.next());
-    }
-    /* Test to_vector method: */
     assert_eq!(vec![5,5,-5,-5,5,-5,5], x1.to_vector());
   }
-
   #[test]
-  fn maximum_length_sequence5() {
+  fn maximum_length_sequence_new_predefined() {
     /* Create test results: */
     let vals = vec![
       vec![1],
@@ -620,7 +642,7 @@ mod tests {
         1,0,1,1,1,1,0,1,1,1,0,1,0,1,0,0,1,1,0,1,1,1,0,0,1,0,0,0,1,1,
         1,0,0,0]
     ];
-    /* Test the sequences: */
+    /* Test `new_predefined` method: */
     for i in 0..vals.len() {
       /* Equal values: */
       let x: MaximumLengthSequence<u8> =
@@ -629,8 +651,7 @@ mod tests {
       let v: Vec<u8> = x.to_vector();
       assert_eq!(vals[i], v);
       /* Correct period: */
-      let y: PeriodicSignal<u8> =
-        PeriodicSignal { values: v };
+      let y: PeriodicSignal<u8> = PeriodicSignal::new(v);
       assert_eq!((2u32.pow((i+1) as u32) as usize)-1, y.period());
     }
   }

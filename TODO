@@ -1,0 +1,10 @@
+- Signal Trait
+- Short Time Fourier Transformation
+- ZeroPaddedSignal::sum()
+- generic algorithms for Signal Trait
+- Convolution
+- fix PeriodicSignal for empty value vector
+- improve PeriodicSignal performance (no loops)
+- Short Time Fourier Transform
+- PeriodicSignal::set(...)
+- necessary to make immutable before returning?

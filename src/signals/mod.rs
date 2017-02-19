@@ -1,3 +1,3 @@
-mod zero_padded_signal;
-mod periodic_signal;
-mod maximum_length_sequence;
+pub mod zero_padded_signal;
+pub mod periodic_signal;
+pub mod maximum_length_sequence;

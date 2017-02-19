@@ -4,7 +4,7 @@ extern crate num;
   Models a maximum length sequence generator.
 */
 #[allow(dead_code)]
-struct MaximumLengthSequence<T> {
+pub struct MaximumLengthSequence<T> {
   coefficients: Vec<bool>,
   state: Vec<bool>,
   val_false: T,

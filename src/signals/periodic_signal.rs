@@ -30,6 +30,14 @@ impl<T: num::traits::Num + Clone> PeriodicSignal<T> {
   pub fn size(&self) -> usize {
     self.values.len()
   }
+
+  /**
+    Returns all values as a vector.
+  */
+  #[allow(dead_code)]
+  pub fn get_values(self) -> Vec<T> {
+    self.values
+  }
   
   /**
     Returns the value at the given index.

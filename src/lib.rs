@@ -1,3 +1,4 @@
 #[macro_use]
-mod macros;
-mod signals;
+pub mod macros;
+pub mod signals;
+pub mod algorithms;

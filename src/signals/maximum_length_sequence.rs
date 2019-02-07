@@ -203,7 +203,7 @@ mod tests {
   }
   #[test]
   #[should_panic(expected = "assertion failed: \
-    `(left == right)` (left: `3`, right: `1`)")]
+    `(left == right)`\n  left: `3`,\n right: `1`")]
   fn new2() {
     let _: MaximumLengthSequence<u8> = MaximumLengthSequence::new(
       vec![true,false], vec![true]);

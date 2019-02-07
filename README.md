@@ -20,3 +20,4 @@ This is a small Rust library for Signal Processing algorithms, my first Rust pro
 * pre-defined polynoms for *MaximumLengthSequence*
 * *ZeroPaddedSignal*-like functions for *MaximumLengthSequence*
 * operators (Add,Sub,Mul,Div,...) for *ZeroPaddedSignal*
+* *findpeaks* function
